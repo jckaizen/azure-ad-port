@@ -26,10 +26,6 @@ This tutorial outlines the implementation of on-premises Active Directory within
 
 <h2>Deployment and Configuration Steps</h2>
 
-
-<p>
-<img src="" width="80%"/>
-</p>
 <p>
 We will begin by creating the the Windows Server that Active Directory(AD) will be installed on. So go within Microsoft Azure to virtual machine page and create a new virtual machine. We will create also create a new resource group for the server and client to grouped into so just create a new resource group. Configure the VM to use "Windows Server 2022 Datacenter". 2 CPU cores are sufficient for this server so select that then click "Review + create" then click create on the page. We will use the subnet that this VM will create for the client so that they are technically on the same network.
 </p>
@@ -109,4 +105,10 @@ Now that both VMs are setup, we need the server's private IP to static for later
 
 ![Screenshot from 2023-07-12 11-49-08](https://github.com/jckaizen/azure-ad-port/assets/57122203/12ac46e9-96c7-46f5-90f5-3f9f063a6881)
 
-<p>To see if this worked, we'll create many users using a powershell script. On the server, open "Powershell ISE" as an admin. Create a new file and paste this script in.</p>
+<p>To see if this worked, we'll create many users using a powershell script. On the server, open "Powershell ISE" as an admin. Create a new file and paste this <a href="https://github.com/jckaizen/azure-ad-port/blob/main/network_analysis_and_nsgs/script.txt">script</a> in. Run the script.</p>
+
+![Screenshot from 2023-07-12 11-52-38](https://github.com/jckaizen/azure-ad-port/assets/57122203/7bcde4b4-1f84-4d2c-8662-4305af227d4b)
+
+<p>We'll pick one user and try to log into the client to see if we even can. And it does work.</p>
+
+![Screenshot from 2023-07-12 11-53-45](https://github.com/jckaizen/azure-ad-port/assets/57122203/4e5bb83f-694f-4d5d-ac2b-30271ea75ab7)
