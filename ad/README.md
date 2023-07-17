@@ -21,13 +21,13 @@ This tutorial outlines the implementation of on-premises Active Directory within
 
 - Step 1: Create Windows server and client VMs on same subnet within Azure
 - Step 2: Install active directory on Windows Server and promote it as a Domain Controller
-- Step 3: Create multiple "Organaization Units" and put users into their respective unit
-- Step 4: Join Windows client to domain controller and allow access to non-admin users
+- Step 3: Create multiple "Organizational Units" and put users into their respective unit
+- Step 4: Join Windows client to Domain Controller and allow access to non-admin users
 
 <h2>Deployment and Configuration Steps</h2>
 
 <p>
-We will begin by creating the the Windows Server that Active Directory(AD) will be installed on. So go within Microsoft Azure to virtual machine page and create a new virtual machine. We will create also create a new resource group for the server and client to grouped into so just create a new resource group. Configure the VM to use "Windows Server 2022 Datacenter". 2 CPU cores are sufficient for this server so select that then click "Review + create" then click create on the page. We will use the subnet that this VM will create for the client so that they are technically on the same network.
+We will begin by creating the Windows Server that Active Directory(AD) will be installed on. So go within Microsoft Azure to the virtual machine page and create a new virtual machine. We will also create a new resource group for the server and client to be grouped into so just create a new resource group. Configure the VM to use "Windows Server 2022 Datacenter". 2 CPU cores are sufficient for this server so select that then click "Review + create" then click create on the page. We will use the subnet that this VM will create for the client so that they are technically on the same network.
 </p>
 
 ![Screenshot from 2023-07-12 10-41-59](https://github.com/jckaizen/azure-ad-port/assets/57122203/b9dd31bd-fa6e-45f4-9d48-f4ca08c9da29)
@@ -45,7 +45,7 @@ Now that both VMs are setup, we need the server's private IP to static for later
 
 <p>Great. Now let's remote into the client. I will use Remmina since I'm on Linux. If you're on Windows, you can use the built-in remote desktop appliation. MacOS will need a third-party application as well.</p>
 
-<p>Once logged in, open up the command prompt and perpetually ping <i>(ping x.x.x.x -t)</i> the private IP of the server. It should time out since, by default, Windows server has ICMP disable.</p>
+<p>Once logged in, open up the command prompt and perpetually ping <i>(ping x.x.x.x -t)</i> the private IP of the server. It should time out since, by default, Windows server has ICMP disabled.</p>
 
 ![Screenshot from 2023-07-12 10-52-13](https://github.com/jckaizen/azure-ad-port/assets/57122203/18d0a577-37c3-4acd-9d36-295e028fe451)
 
@@ -69,7 +69,7 @@ Now that both VMs are setup, we need the server's private IP to static for later
 
 ![Screenshot from 2023-07-12 10-59-43](https://github.com/jckaizen/azure-ad-port/assets/57122203/1c5e728e-9252-4b40-98b1-39719908fbad)
 
-<p>Once done, there should be a caution notice under the notications asking to promote the server to be a domain controller. Clikc on it.</p>
+<p>Once done, there should be a caution notice under the notications asking to promote the server to be a domain controller. Click on it.</p>
 
 ![Screenshot from 2023-07-12 11-02-25](https://github.com/jckaizen/azure-ad-port/assets/57122203/d30555d4-403a-434b-b692-4e02fe3c7791)
 
@@ -101,11 +101,11 @@ Now that both VMs are setup, we need the server's private IP to static for later
 
 ![Screenshot from 2023-07-12 11-41-37](https://github.com/jckaizen/azure-ad-port/assets/57122203/996afd05-d4f2-4eca-86a3-b4dbee88adc2)
 
-<p>Only admins can log into the client but we want non-admin to log in as well. So logging in as "jane_admin" on the client, go to system settings and then remote desktop. Click on "Select users that can remotely access this PC". Add "Domain Users". Normally you'll want to use group policy to allow you to do this to many systems at once, but this is just a quick way to do so.</p>
+<p>Only admins can log into the client but we want non-admin users to log in as well. So logging in as "jane_admin" on the client, go to system settings and then remote desktop. Click on "Select users that can remotely access this PC". Add "Domain Users". Normally you'll want to use group policy to allow you to do this to many systems at once, but this is just a quick way to do so.</p>
 
 ![Screenshot from 2023-07-12 11-49-08](https://github.com/jckaizen/azure-ad-port/assets/57122203/12ac46e9-96c7-46f5-90f5-3f9f063a6881)
 
-<p>To see if this worked, we'll create many users using a powershell script. On the server, open "Powershell ISE" as an admin. Create a new file and paste this <a href="https://github.com/jckaizen/azure-ad-port/blob/main/network_analysis_and_nsgs/script.txt">script</a> in. Run the script.</p>
+<p>To see if this worked, we'll create many users using a powershell script. On the server, open "Powershell ISE" as an admin. Create a new file and paste this <a href="https://github.com/jckaizen/azure-ad-port/blob/main/ad/script.txt">script</a> in. Run the script.</p>
 
 ![Screenshot from 2023-07-12 11-52-38](https://github.com/jckaizen/azure-ad-port/assets/57122203/7bcde4b4-1f84-4d2c-8662-4305af227d4b)
 
