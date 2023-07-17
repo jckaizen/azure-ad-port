@@ -38,11 +38,11 @@ First, go to the Virtual Machine page of Azure and select to create a new VM. Si
 
 ![Screenshot from 2023-07-11 11-29-07](https://github.com/jckaizen/azure-ad-port/assets/57122203/3f7d6f0e-7762-43f8-bbeb-92717df43c38)
 
-<p>Next, create a new virtual machine. This VM will be an Ubuntu 20.04 LTS server. Put it under the same resource group as the Windows one and select 2 CPU cores for it as well. You also want to change "Authentication type" from "SSH public key" to "Password" since we aren't remoting into this machine using SSH. Make sure you remember the username and password as well (We will use SSH to remote into it but from the Windows client later on.)</p>
+<p>Next, create a new virtual machine. This VM will be an Ubuntu 20.04 LTS server. Put it under the same resource group as the Windows one and select 2 CPU cores for it as well. You also want to change the "Authentication type" from "SSH public key" to "Password" since we aren't remoting into this machine using SSH. Make sure you remember the username and password as well (We will use SSH to remote into it but from the Windows client later on.)</p>
 
 ![Screenshot from 2023-07-11 11-31-43](https://github.com/jckaizen/azure-ad-port/assets/57122203/c0636964-9afb-446f-8d3e-56b3e7479d8a)
 
-<p>Under "Networking", chagne the virtual network to be the same as the Windows client. This will put them in the same network. Afterwards, continue to "Review + create" and create the VM.</p>
+<p>Under "Networking", change the virtual network to be the same as the Windows client. This will put them in the same network. Afterwards, continue to "Review + create" and create the VM.</p>
 
 ![Screenshot from 2023-07-11 11-32-29](https://github.com/jckaizen/azure-ad-port/assets/57122203/9349b5fb-f684-4d7b-8513-7007e6eddb57)
 
@@ -62,7 +62,9 @@ Once logged in, go download Wireshark from the edge browser within the VM. Just 
 
 <h3>ICMP</h3>
 
-<p>ICMP is a specific packet when you're pinging a machine (mainly used to diagnose networks). So filter on "icmp" in the search bar. Then go to the command prompt and ping the private IP address of the Ubuntu server. It will be located within the network interface of Ubuntu VM within Azure.</p>
+<p>ICMP is a specific packet when you're pinging a machine (mainly used to diagnose networks).</p> 
+
+<p>Filter on "icmp" in the search bar. Then go to the command prompt and ping the private IP address of the Ubuntu server. The private IP will be located within the network interface of the Ubuntu VM within Azure.</p>
 
 ![Screenshot from 2023-07-11 11-48-06](https://github.com/jckaizen/azure-ad-port/assets/57122203/0e7195cc-f700-49d2-bf10-7ec14e46ba57)
 
@@ -74,7 +76,7 @@ Once logged in, go download Wireshark from the edge browser within the VM. Just 
 
 ![Screenshot from 2023-07-11 11-48-45](https://github.com/jckaizen/azure-ad-port/assets/57122203/baee25d8-0487-4a73-a298-d987038bc060)
 
-<p>You can also see a firewall blocking the IMCP. Ping the Ubuntu server perpetually <i>(ping x.x.x.x -t)</i> in the Windows VM. Then go to the network security group of the Ubuntu VM within Azure and under "Inbound security rules", create a rule to deny ICMP traffic.</p>
+<p>You can also see a firewall blocking the IMCP (in actuality, it's a network security group). Ping the Ubuntu server perpetually <i>(ping x.x.x.x -t)</i> in the Windows VM. Then go to the network security group of the Ubuntu VM within Azure and under "Inbound security rules", create a rule to deny ICMP traffic.</p>
 
 ![Screenshot from 2023-07-11 11-50-13](https://github.com/jckaizen/azure-ad-port/assets/57122203/19d2293e-ffb1-4936-8551-bfe857a3ab13)
 
@@ -88,9 +90,9 @@ Once logged in, go download Wireshark from the edge browser within the VM. Just 
 
 <h3>SSH</h3>
 
-<p>SSH is mainly used to remote into servers that ish "headless" (no GUI) or you just need to use the terminal.</p>
+<p>SSH is mainly used to remote into servers that are "headless" (no GUI) or you just need to use the terminal of machine.</p>
 
-<p>Filter on "ssh" in the search bar. Now we will ssh into our Ubuntu VM so type <i>ssh x.x.x.x</i>. The x's is the private IP address of the Ubuntu VM. Put in the username and password you created for that VM and enter. If you type any command on that machines you will notice all of the packets being captured.</p>
+<p>Filter on "ssh" in the search bar. Now we will ssh into our Ubuntu VM so type <i>ssh x.x.x.x</i>. The x's is the private IP address of the Ubuntu VM. Put in the username and password you created for that VM and hit enter. If you type any command on that machine (the one that you SSH into) you will notice all of the packets being captured.</p>
 
 ![Screenshot from 2023-07-11 12-05-43](https://github.com/jckaizen/azure-ad-port/assets/57122203/0e976f2a-ca09-4924-bf56-af954f639816)
 
@@ -98,7 +100,7 @@ Once logged in, go download Wireshark from the edge browser within the VM. Just 
 
 <h3>DHCP</h3>
 
-<p>Mainly found on consumer-grade routers, DHCP assigns private IP addresses to devices on the network.</p>
+<p>Mainly found on routers, DHCP assigns private IP addresses to devices on the network.</p>
 
 <p>Filter on "dhcp" in the search bar. The only way to observe this is if we ask for a new IP address from the DHCP server so in the command prompt, type "ipconfig /renew" and watch the packets being captured in Wireshark.</p>
 
@@ -112,7 +114,7 @@ Once logged in, go download Wireshark from the edge browser within the VM. Just 
 
 ![Screenshot from 2023-07-11 12-08-59](https://github.com/jckaizen/azure-ad-port/assets/57122203/a6aa8d78-13af-43c5-845e-b30b6c9b2d2c)
 
-<p>And when you take a look at Wireshark you will notice queries for google.com</p>
+<p>And when you take a look at Wireshark, you will notice queries for google.com</p>
 
 ![Screenshot from 2023-07-11 12-09-10](https://github.com/jckaizen/azure-ad-port/assets/57122203/815b6628-842d-4ede-af7a-cff048284029)
 
@@ -120,4 +122,4 @@ Once logged in, go download Wireshark from the edge browser within the VM. Just 
 
 <p>RDP or remote desktop protocol is what allows you to remote into the desktop of a machine.</p>
 
-<p>If you remote into your VM, filter on "tpc.port == 3389" (3389 is the port nubmer of RDP), you will notice a constant stream of packets since we are continuously connected the session. I can't show a screenshot it show my real IP address, but you get the point.</p>
+<p>If you remote into your VM, filter on "tcp.port == 3389" (3389 is the port number of RDP), you will notice a constant stream of packets since we are continuously connected to the session. I can't show a screenshot since it shows my real IP address, but you get the point.</p>
